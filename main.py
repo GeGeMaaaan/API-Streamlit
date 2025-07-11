@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 import numpy as np
+import uvicorn  # добавляем для запуска сервера
 
 app = FastAPI(title="Movie Popularity Prediction API")
 
@@ -46,3 +47,7 @@ def predict(features: Features):
     input_data = np.array([[getattr(features, field) for field in features.__annotations__]])
     prediction = model.predict(input_data)
     return {"prediction": float(prediction[0])}
+
+# Блок для запуска сервера через python main.py
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
